@@ -10,4 +10,8 @@ export const createAccount = catchAsync(async(req, res, next) => {
 });
 
 
+export const authorize = catchAsync(async (req, res, next) => {
+    
+});
+
 

@@ -16,11 +16,11 @@ const ArticleSchema = new Schema (
             type: String,
             required: true,
         },
-        autor: {
+        author: {
             type: String,
             required: true,
         },
-        catagory: {
+        category: {
           type: mongoose.Schema.ObjectId,
           ref: 'Category',
           required: true,

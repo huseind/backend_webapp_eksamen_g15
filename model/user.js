@@ -19,8 +19,8 @@ const UserSchema = new Schema(
             type: String,
             required: true,
         },
-        role: {
-            type: String,
+        role: { // role is set to user by default, can be spesified in postman to admin or superAdmin
+            type: String, 
             default: "user",
         }
     },{timestamps: true, toJSON: {virtuals:true}, toObject: {virtuals:true}}
@@ -41,7 +41,7 @@ UserSchema.methods.getJwtToken = function () {
   };
   
 // comparing the hashed password in the db to hashed password from the user
-UserSchema.methods.comparePassword = async function (password) {
+UserSchema.methods.passwordsMatch = async function (password) {
     const result = argon2.verify(this.password, password);
     return result;
 };

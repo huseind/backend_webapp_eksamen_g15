@@ -7,5 +7,4 @@ const router = express.Router();
 router.post('/',userController.createAccount);
 
 
-
 export default router;

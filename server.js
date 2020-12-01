@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import cookieParser from 'cookie-parser'; // package for parcing cookies
 
 import { PORT } from './constants/index.js'; //henter PORT fra constans mappen
 import 'dotenv/config.js';  // henter alt fra .env
@@ -24,23 +25,25 @@ app.use(cors({
 }))
     
 
-  app.use(`/user`, user); // hoved ruta / users.... håndteres av users.js i routes
-  app.use('/article', article);   // poll ruta / users... håndteres av poll.js i routes
-  connectDatabase();        //kobler til db vi config mappen
-  app.use(errorMiddleware); // bruker errorhåndtering vi selv har laget
+app.use(cookieParser());
 
-  const server = app.listen(
-    PORT,
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
-  );
+app.use(`/user`, user); // hoved ruta / users.... håndteres av users.js i routes
+app.use('/article', article);   // poll ruta / users... håndteres av poll.js i routes
+connectDatabase();        //kobler til db vi config mappen
+app.use(errorMiddleware); // bruker errorhåndtering vi selv har laget
 
-  // når prosessen har en uhåndtert feil
-  // innebygget i node, 'on' lytter til 'unhandledRejection' i prosessen 
-  // siste line of defence om ikke vi har håndtert alle feil som kan forekomme 
-  process.on('unhandledRejection', (err) => {
-    console.log(`Error: ${err.message}`);     // skriv ut feiled 
-    console.log('Shutting down server due to Unhandled Promise Rejection');  //consolo log at serveren kommer til å avsluttes
-    server.close(() => { //avslutt server
-      process.exit(1); // 1 betyr at feil har forekommet
-    }); 
-  });
+const server = app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+);
+
+// når prosessen har en uhåndtert feil
+// innebygget i node, 'on' lytter til 'unhandledRejection' i prosessen 
+// siste line of defence om ikke vi har håndtert alle feil som kan forekomme 
+process.on('unhandledRejection', (err) => {
+  console.log(`Error: ${err.message}`);     // skriv ut feiled 
+  console.log('Shutting down server due to Unhandled Promise Rejection');  //consolo log at serveren kommer til å avsluttes
+  server.close(() => { //avslutt server
+    process.exit(1); // 1 betyr at feil har forekommet
+  }); 
+});

@@ -8,12 +8,13 @@ const CategorySchema = new Schema(
             type: String,
             required: true,
         }
-    }
+    },
+    
 );
 
 CategorySchema.virtual('articles', {
     ref: 'Article',
-    localField: 'name',
+    localField: '_id',
     foreignField: 'category',
     justOne: false,
     unique: true,

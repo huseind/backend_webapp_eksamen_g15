@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -21,12 +21,13 @@ const ArticleSchema = new Schema (
             required: true,
         },
         catagory: {
-          type: String,
-          required: true,  
+          type: mongoose.Schema.ObjectId,
+          ref: 'Category',
+          required: true,
         },
-        admin: {
+        user: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Admin',
+            ref: 'User',
             required: true,
         },
 

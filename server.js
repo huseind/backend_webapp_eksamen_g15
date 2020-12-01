@@ -4,8 +4,8 @@ import cors from 'cors';
 
 import { PORT } from './constants/index.js'; //henter PORT fra constans mappen
 import 'dotenv/config.js';  // henter alt fra .env
-import user from './routes/user.js';  // henter bruker rutene
-import poll from './routes/poll.js';
+import admin from './routes/admin.js';  // henter bruker rutene
+import article from './routes/article.js';
 import connectDatabase from './config/db.js'; // henter metode for å koble til db
 import errorMiddleware from './middleware/errors.js';
 
@@ -24,8 +24,8 @@ app.use(cors({
 }))
     
 
-  app.use(`/users`, user); // hoved ruta / users.... håndteres av users.js i routes
-  app.use('/polls', poll);   // poll ruta / users... håndteres av poll.js i routes
+  app.use(`/admin`, admin); // hoved ruta / users.... håndteres av users.js i routes
+  app.use('/articles', article);   // poll ruta / users... håndteres av poll.js i routes
   connectDatabase();        //kobler til db vi config mappen
   app.use(errorMiddleware); // bruker errorhåndtering vi selv har laget
 

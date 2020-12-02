@@ -14,13 +14,22 @@ const UserSchema = new Schema(
             type: String,
             required: true,
             unique: true,
+            match: [/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,'Email has to be real']
         },
         password: {
             type: String,
             required: true,
+            minlength: [3,'Password has to be atleas 3 char long'], 
+            match: [/\d/, 'Password has to contain at least 1 digit'],
+            select: false,
+            
+            
         },
         role: { // role is set to user by default, can be spesified in postman to admin or superAdmin
             type: String, 
+            enum: {
+                values: ['user', 'admin'],
+            },
             default: "user",
         }
     },{timestamps: true, toJSON: {virtuals:true}, toObject: {virtuals:true}}
@@ -35,7 +44,7 @@ UserSchema.pre('save', async function(next) {
 
 // giving the user jwt webtoken, if the password is right
 UserSchema.methods.getJwtToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: this._id, name: this.name, role: this.role }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_TIME,
     });
   };

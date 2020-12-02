@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import cookieParser from 'cookie-parser'; // package for parcing cookies
+import cookieParser from 'cookie-parser'; 
 
 import { PORT } from './constants/index.js'; //henter PORT fra constans mappen
 import 'dotenv/config.js';  // henter alt fra .env
@@ -20,13 +20,13 @@ app.use(express.json()); // brukes for å kunne lese request
 
 
 app.use(cors({
-  origin: '*',
-  //allowedHeaders: ['Content-Type', 'application/json']
+  origin: 'http://localhost:3000',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 }))
     
 
-app.use(cookieParser());
-
+app.use(cookieParser()); // package for parcing cookies
 app.use(`/user`, user); // hoved ruta / users.... håndteres av users.js i routes
 app.use('/article', article);   // poll ruta / users... håndteres av poll.js i routes
 connectDatabase();        //kobler til db vi config mappen

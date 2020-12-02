@@ -20,7 +20,9 @@ export const createCategory = async(category) => Category.create(category);
 // creating a new article
 export const createArticle = async(article) => Article.create(article);
 
+// getting all articles (for logged in users)
 // populate makes the category field, that is ususally just an id, contain name as well
 export const listArticles = async() => Article.find().populate('category','name');
 
+export const listPublicArticles = async() => Article.find({"secret":false}).populate('catagory', 'name');
 

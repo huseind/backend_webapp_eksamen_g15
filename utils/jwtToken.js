@@ -3,12 +3,13 @@ export const sendToken = (user, res) => {
   
     const options = {
       expires: new Date(
-        Date.now() + process.env.COOKIE_EXPIRE_TIME * 24 * 60 * 60 * 1000
+        Date.now() + process.env.COOKIE_EXPIRE_TIME * 24 * 60 * 60 * 1000  // expires 7 day
       ),
-      httpOnly: true,
-      sameSite: true,
+      httpOnly: true, // cannot be read by js, http only
+      sameSite: true, // cannot be used by other sites
     };
-  
+    
+    // REMOVE???
     if (process.env.NODE_ENV === 'production') {
       options.secure = true;
     }
@@ -21,7 +22,7 @@ export const sendToken = (user, res) => {
         token,
         user: {
           email: user.email,
-          role: user.role,
+          role: user.role, 
         },
       });
   };

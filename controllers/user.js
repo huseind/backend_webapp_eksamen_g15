@@ -1,17 +1,41 @@
-// middleware for å håndtere feil (unhandled promise rejection), tar imot en funksjon hvor feil kan oppstå 
-import catchAsync from '../middleware/CatchAsync.js'; 
+import catchAsync from '../middleware/catchAsync.js';
+import { userServices } from '../services/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
+import { sendToken } from '../utils/jwtToken.js';
 
-import  { userServices }  from '../services/index.js';
 
-export const createAccount = catchAsync(async(req, res, next) => {
-    const result = await userServices.createAccount(req.body);
-    res.status(201).json(result);
+export const register = catchAsync(async(req, res, next) => {
+    const user = await userServices.register(req.body);
+    sendToken(user,res); // creating a token, and sending it back in response
 });
 
+// login method
+export const login = catchAsync(async(req, res, next) => {
+    const {email, password} = req.body; //checking if req contains email and password
+    if(!email || !password){
+        return next(new ErrorHandler('Mangler epost eller passord', 400)); // if not retorn error
+    }
+    const user = await userServices.getUserByEmail({email},true); // checking if the user is in the db
+    if(!user){
+        return next(new ErrorHandler('Mangler epost eller passord', 400));
+    }
 
-export const authorize = catchAsync(async (req, res, next) => {
-    
+    const isPasswordRight = await user.passwordsMatch(password); //comparing provided password with the one in the db
+    if(!isPasswordRight){
+        return next(new ErrorHandler('Mangler epost eller passord', 400));
+    }
+    sendToken(user,res); // if all is good, a toke is sent
 });
+
+export const logout = catchAsync(async(req, res, next) => {
+    res.cookie('token','none', { // setting the cookie to none and setting it to expire now
+        expires: new Date(Date.now()),
+        httpOnly:true,
+    });
+    res.status(200).json({ 
+        success: true,
+        data: 'You have been logget out',
+    });
+})
 
 

@@ -25,6 +25,11 @@ const ArticleSchema = new Schema (
           ref: 'Category',
           required: true,
         },
+        secret: {
+            select: false,
+            type: Boolean,
+            default: false,
+        },
         user: {
             type: mongoose.Schema.ObjectId,
             ref: 'User',

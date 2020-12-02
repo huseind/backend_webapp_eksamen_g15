@@ -18,7 +18,7 @@ router.post("/category", [isAuthenticated,isAuthorized('admin')], articleControl
 // creating an article 
 router.post("/create", [isAuthenticated,isAuthorized('admin')], articleController.createArticle);
 
-// getting all articles, if a user is logged in
+// getting all articles, if a user is logged in, if not, the middleware will use the publicArticle method from the controller
 router.get("/",[canViewAllArticles], articleController.listArticles);
 
 export default router;

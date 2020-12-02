@@ -7,6 +7,7 @@ import { isAuthenticated  } from '../middleware/auth.js';
 
 ////////////////////////////////               AUTHORS               //////////////////////////////
 
+// authors are static and saved in constants
 export const getAuthors = (req, res, next) => {
     res.status(200).json(authors);
 };

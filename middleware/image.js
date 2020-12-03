@@ -9,6 +9,7 @@ function fileFilter(req, file, cb) {
   cb(null, true);
 }
 
+// where to store and what to call the image
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, './public/images');
@@ -18,6 +19,7 @@ const storage = multer.diskStorage({
   },
 });
 
+// setting limit on size, type of image and limiting the upload to a single image
 export const upload = multer({
   storage,
   limits: { fileSize: 2000000 }, // 2mb

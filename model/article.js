@@ -12,9 +12,19 @@ const ArticleSchema = new Schema (
             type: String,
             required: true,
         },
-        content: {
+        subtitleOne: {
             type: String,
             required: true,
+        },
+        contentOne: {
+            type: String,
+            required: true,
+        },
+        subtitleTwo: {
+            type: String,
+        },
+        contentTwo: {
+            type: String,
         },
         author: {
             type: String,

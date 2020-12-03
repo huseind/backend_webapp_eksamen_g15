@@ -2,22 +2,10 @@ import catchAsync from '../middleware/catchAsync.js';
 import { userServices } from '../services/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import { sendToken } from '../utils/jwtToken.js';
-import {sendMail} from '../utils/sendMail.js';
 
 
 export const register = catchAsync(async(req, res, next) => {
     const user = await userServices.register(req.body);
-    // move trycatch to contact form
-    try {
-        await sendMail({
-            email: user.email,
-            subject: 'TEST',
-            message: JSON.stringify(user),
-        })
-    } catch (error) {
-        console.log(error);
-    }
-
     sendToken(user,res); // creating a token, and sending it back in response
 });
 

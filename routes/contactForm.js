@@ -1,5 +1,4 @@
 import express  from 'express';
-// eslint-disable-next-line import/named
 import { contactFormController } from '../controllers/index.js';
 import { isAuthenticated, isAuthorized } from '../middleware/auth.js';
 
@@ -10,6 +9,6 @@ router.post('/', isAuthenticated, contactFormController.sendForm);
 
 router.get('/forms', [isAuthenticated,isAuthorized('admin')], contactFormController.listForms);
 
-router.delete('/:id',[isAuthenticated,isAuthorized('admin')], contactFormController.deleteForm);
+router.delete('/delete/:id',[isAuthenticated,isAuthorized('admin')], contactFormController.deleteForm);
 
 export default router;

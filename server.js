@@ -5,9 +5,12 @@ import cookieParser from 'cookie-parser';
 
 import { PORT } from './constants/index.js'; // henter PORT fra constans mappen
 import 'dotenv/config.js'; // henter alt fra .env
+
 import user from './routes/user.js'; // henter bruker rutene
 import article from './routes/article.js';
 import contactForm from './routes/contactForm.js';
+import image from './routes/image.js';
+
 import connectDatabase from './config/db.js'; // henter metode for å koble til db
 import errorMiddleware from './middleware/errors.js';
 
@@ -18,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json()); // brukes for å kunne lese request
+app.use(express.static(`${__dirname}/public`)); // used to handle static data (__dirname takes us from current path to public folder)
 
 app.use(
   cors({
@@ -28,9 +32,12 @@ app.use(
 );
 
 app.use(cookieParser()); // package for parcing cookies
+
 app.use(`/user`, user); // hoved ruta / users.... håndteres av users.js i routes
 app.use('/article', article); // poll ruta / users... håndteres av poll.js i routes
-app.use('/contact', contactForm);
+app.use('/contact', contactForm); // route for handling contactFrom routes
+app.use('/image',image); // route for up-/downloading images
+
 connectDatabase(); // kobler til db vi config mappen
 app.use(errorMiddleware); // bruker errorhåndtering vi selv har laget
 

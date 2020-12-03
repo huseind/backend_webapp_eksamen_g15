@@ -26,3 +26,13 @@ export const listArticles = async() => Article.find().populate('category','name'
 
 export const listPublicArticles = async() => Article.find({"secret":false}).populate('catagory', 'name');
 
+export const getArticleById = async (id) => Article.findById(id);
+
+export const editArticle = async (id, editArticle) => 
+    Article.findByIdAndUpdate(id, editArticle, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+      });
+
+

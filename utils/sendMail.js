@@ -1,5 +1,8 @@
 import nodemailer from 'nodemailer';
 
+
+// util for sending mail, atm. a mail is sent when a user is created, should be moved from userController to when a contact form i sent
+// mail is sent to userEmail, (mailtrap)
 export const sendMail = async (options) => {
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,

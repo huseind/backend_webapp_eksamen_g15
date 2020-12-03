@@ -38,7 +38,12 @@ export const canViewAllArticles = catchAsync(async(req,res,next)=>{
   const decoded = jwt.verify(token, process.env.JWT_SECRET); // if there is a token, it is decoded
   const user = await userServices.getUserById(decoded.id); // getting user by the id 
 
-  if (!user) { // if the user does not exist
+  //checking user role
+  if(user.role !== 'user' || user.role !== 'admin'){
+    return articleController.listArticles(req,res,next);
+  }
+
+  if (!user) { // if the user does not exist, show public articles
     return articleController.listArticles(req,res,next);
   }
 
@@ -49,7 +54,7 @@ export const canViewAllArticles = catchAsync(async(req,res,next)=>{
 // cheking if the user has authority (the right role)
 export const isAuthorized = (...roles) => (req, res, next) => {
   if (!roles.includes(req.user.role)) {
-    return next(new ErrorHandler('You are not authorized', 403));
+    return next(new ErrorHandler('You are not authorized for this action', 403));
   }
   next();
 };

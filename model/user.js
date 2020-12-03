@@ -55,13 +55,21 @@ UserSchema.methods.passwordsMatch = async function (password) {
     return result;
 };
 
-// admin is used as a foreign key in articles
+// admin is attached to in articles
 UserSchema.virtual('articles', {
     ref: 'Article',
     localField: '_id',
     foreignField: 'user',
     justOne: true,
   });
+
+// user is attached to a contact form when they send one
+UserSchema.virtual('contactForms', {
+    ref:'ContactForm',
+    localField:'_id',
+    foreignField: 'user',
+    justOne: true,
+})
 
 
 export default mongoose.model('User', UserSchema);

@@ -4,7 +4,7 @@ import { userController } from '../controllers/index.js';
 
 const router = express.Router();
 
-// creating a user (admin or ...)
+// creating a user (user or admin, if creating an admin it has to be spesified)
 router.post('/register',userController.register);
 
 // loging in

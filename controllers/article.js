@@ -1,9 +1,7 @@
 import catchAsync from '../middleware/CatchAsync.js'; 
-import ErrorHandler from '../utils/errorHandler.js';
 import { articleServices } from '../services/index.js';
 // importing authors from consatnts
 import { authors } from '../constants/index.js';
-import { isAuthenticated  } from '../middleware/auth.js';
 
 ////////////////////////////////               AUTHORS               //////////////////////////////
 

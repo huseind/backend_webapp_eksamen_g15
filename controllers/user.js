@@ -5,7 +5,14 @@ import { sendToken } from '../utils/jwtToken.js';
 
 
 export const register = catchAsync(async(req, res, next) => {
+    const {name, email, password} = req.body;
+    if(!name || !email || !password){
+        return next(new ErrorHandler('Mangler navn, epost eller passord', 400)); // if not retorn error
+    }
     const user = await userServices.register(req.body);
+    if(!user){
+        return next(new ErrorHandler('User already exists', 400)); // if not retorn error
+    }
     sendToken(user,res); // creating a token, and sending it back in response
 });
 

@@ -31,9 +31,15 @@ export const login = catchAsync(async(req, res, next) => {
     sendToken(user,res); // if all is good, a toke is sent
 });
 
-export const getUserById = catchAsync(async (req,res,next) => {
-    const user = await userServices.getUserById(req.params.id);
-    res.status(200).json(user);
+export const getUser = catchAsync(async (req,res,next) => {
+    const user = await userServices.getUserById(req.user.id);
+    if (!user) {
+        return next(new ErrorHandler('User does not exist', 404));
+      }
+      res.status(200).json({
+        success: true,
+        data: user,
+      });
 });
 
 export const logout = catchAsync(async(req, res, next) => {

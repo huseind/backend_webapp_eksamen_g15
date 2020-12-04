@@ -1,6 +1,7 @@
 import express  from 'express';
 import { userController } from '../controllers/index.js';
 import user from '../model/user.js';
+import { isAuthenticated } from '../middleware/auth.js';
 
 
 const router = express.Router();
@@ -12,7 +13,7 @@ router.post('/register',userController.register);
 router.post('/login', userController.login);
 
 // getting a user 
-router.post('/me',userController.getUser);
+router.get('/me',isAuthenticated,userController.getUser);
 
 // loging out
 router.post('/logout', userController.logout);

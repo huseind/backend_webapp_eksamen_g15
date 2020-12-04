@@ -10,9 +10,6 @@ export const register = catchAsync(async(req, res, next) => {
         return next(new ErrorHandler('Mangler navn, epost eller passord', 400)); // if not retorn error
     }
     const user = await userServices.register(req.body);
-    if(!user){
-        return next(new ErrorHandler('User already exists', 400)); // if not retorn error
-    }
     sendToken(user,res); // creating a token, and sending it back in response
 });
 
@@ -32,6 +29,11 @@ export const login = catchAsync(async(req, res, next) => {
         return next(new ErrorHandler('Mangler epost eller passord', 400));
     }
     sendToken(user,res); // if all is good, a toke is sent
+});
+
+export const getUserById = catchAsync(async (req,res,next) => {
+    const user = await userServices.getUserById(req.params.id);
+    res.status(200).json(user);
 });
 
 export const logout = catchAsync(async(req, res, next) => {

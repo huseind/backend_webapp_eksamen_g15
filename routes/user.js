@@ -1,5 +1,6 @@
 import express  from 'express';
 import { userController } from '../controllers/index.js';
+import user from '../model/user.js';
 
 
 const router = express.Router();
@@ -9,6 +10,9 @@ router.post('/register',userController.register);
 
 // loging in
 router.post('/login', userController.login);
+
+// getting a user 
+router.post('/me/:id',userController.getUserById);
 
 // loging out
 router.post('/logout', userController.logout);

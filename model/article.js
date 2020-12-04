@@ -35,6 +35,10 @@ const ArticleSchema = new Schema (
           ref: 'Category',
           required: true,
         },
+        image: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Image',
+        },
         secret: {
             select: false,
             type: Boolean,

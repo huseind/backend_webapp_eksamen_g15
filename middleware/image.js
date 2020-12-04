@@ -1,6 +1,7 @@
 import multer from 'multer';
 import ErrorHandler from '../utils/errorHandler';
 
+// filtering the file on filetype
 function fileFilter(req, file, cb) {
   const filetypes = /\.(jpeg|jpg|png)$/;
   if (!file.originalname.match(filetypes)) {

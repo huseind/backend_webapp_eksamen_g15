@@ -13,13 +13,15 @@ export const uploadImage = catchAsync(async(req, res, next) => {
     });
 });
 
-
+// DELETE???
 export const downloadImage = catchAsync(async (req,res,next) => {
     const image = await imageServices.getImageById(req.params.id);
     if(!image){
         return next(new ErrorHandler('Image not found', 404));
     }
-    const imagePath = 'localhost:5000/' + image.file_path.replace('public\\', ''); // for windows, use image.file_path.replace('public/', '') for mac and linux
+   // for windows, use image.file_path.replace('public/', '') for mac and linux
+   // no longer neccesary as it it done when image is saved to db
+    const imagePath = 'localhost:5000/' + image.file_path.replace('public\\', ''); 
     res.status(200).json({
         success:true,
         data:{image, imagePath}

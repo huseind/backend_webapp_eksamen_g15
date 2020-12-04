@@ -43,13 +43,14 @@ export const getUser = catchAsync(async (req,res,next) => {
 });
 
 export const logout = catchAsync(async(req, res, next) => {
-    res.cookie('token','none', { // setting the cookie to none and setting it to expire now
+    res.cookie('token', 'none', { // setting the cookie to none and setting it to expire now
         expires: new Date(Date.now()),
-        httpOnly:true,
+        httpOnly: true,
     });
-    res.status(200).json({ 
-        success: true,
-        data: 'You have been logget out',
+
+    res.status(200).json({
+    success: true,
+    data: 'You have been logged out',
     });
 });
 

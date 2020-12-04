@@ -44,7 +44,7 @@ UserSchema.pre('save', async function(next) {
 
 // giving the user jwt webtoken, if the password is right
 UserSchema.methods.getJwtToken = function () {
-    return jwt.sign({ id: this._id, name: this.name, role: this.role }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_TIME,
     });
   };

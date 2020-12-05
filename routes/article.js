@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/authors", [isAuthenticated,isAuthorized('admin')],  articleController.getAuthors);
 
 // getting the catagories
-router.get("/categories",  [isAuthenticated,isAuthorized('admin')], articleController.listCategories);
+router.get("/categories", articleController.listCategories);
 
 // creating a category
 router.post("/category", [isAuthenticated,isAuthorized('admin')], articleController.createCategory);

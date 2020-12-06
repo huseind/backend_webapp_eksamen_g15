@@ -47,7 +47,7 @@ export const createArticle = catchAsync(async (req, res, next) => {
 
 export const listArticles = catchAsync(async (req, res, next) => {
   const result = await articleServices.listArticles();
-  res.status(200).json({ succes: true, data: result });
+  res.status(200).json({ success: true, data: result });
 });
 
 // edititng an article

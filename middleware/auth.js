@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { userServices } from '../services/index.js';
+import { articleServices, userServices } from '../services/index.js';
 import { articleController } from '../controllers/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import catchAsync from './catchAsync.js';
@@ -44,11 +44,6 @@ export const canViewAllArticles = catchAsync(async (req, res, next) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET); // if there is a token, it is decoded
   const user = await userServices.getUserById(decoded.id); // getting user by the id
 
-  // checking user role
-  if (user.role !== 'user' || user.role !== 'admin') {
-    return articleController.listArticles(req, res, next);
-  }
-
   if (!user) {
     // if the user does not exist, show public articles
     return articleController.listArticles(req, res, next);
@@ -58,6 +53,11 @@ export const canViewAllArticles = catchAsync(async (req, res, next) => {
 });
 
 export const canViewThisArticle = catchAsync(async (req, res, next) => {
+  const article = await articleServices.getArticleById(req.params.id);
+  if (article.secret === false) {
+    return next();
+  }
+
   let token;
   if (req.cookies?.token) {
     // checking if the req cookie contains token
@@ -67,19 +67,13 @@ export const canViewThisArticle = catchAsync(async (req, res, next) => {
   if (!token) {
     // if token is null, show only public articles
     return next(
-      new ErrorHandler('You have to be logged in to view this article', 400)
+      new ErrorHandler('You have to be logged in to view this article 1', 400)
     );
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET); // if there is a token, it is decoded
   const user = await userServices.getUserById(decoded.id); // getting user by the id
 
-  // checking user role
-  if (user.role !== 'user' || user.role !== 'admin') {
-    return next(
-      new ErrorHandler('You have to be logged in to view this article', 400)
-    );
-  }
 
   if (!user) {
     // if the user does not exist, show public articles

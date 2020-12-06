@@ -4,13 +4,12 @@ import ErrorHandler from '../utils/errorHandler.js';
 import { sendMail } from '../utils/sendMail.js';
 
 export const sendForm = catchAsync(async (req, res, next) => {
-  req.body.user = req.user.id; // adding userId to the req.body and it is added to the object saved in the db
   const sentForm = await contactFormServices.sendForm(req.body);
   const user = await userServices.getUserById(sentForm.user);
   // sending a message to the user for
   try {
     await sendMail({
-      email: user.email,
+      email: req.email,
       subject: 'FG Inquiry received',
       message: `Thank you for contacting us, your inqury: 
                     \n ${sentForm.subject} \n ${sentForm.message} 

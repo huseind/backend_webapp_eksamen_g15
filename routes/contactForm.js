@@ -5,7 +5,7 @@ import { isAuthenticated, isAuthorized } from '../middleware/auth.js';
 const router = express.Router();
 
 // router for sending a form
-router.post('/', isAuthenticated, contactFormController.sendForm);
+router.post('/', contactFormController.sendForm);
 
 router.get('/forms', [isAuthenticated,isAuthorized('admin')], contactFormController.listForms);
 

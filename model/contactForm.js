@@ -4,10 +4,14 @@ const { Schema } = mongoose;
 
 const ContactFormSchema = new Schema(
   {
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-      required: true,
+    name: {
+      type: String,
+      requred: true,
+    },
+    email: {
+      type: String,
+      requered: true,
+      match: [/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Email has to be real'],
     },
     subject: {
       type: String,

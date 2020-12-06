@@ -21,8 +21,11 @@ router.post("/create", [isAuthenticated,isAuthorized('admin')], articleControlle
 // getting all articles, if a user is logged in, if not, the middleware will use the publicArticle method from the controller
 router.get("/",[canViewAllArticles], articleController.listArticles);
 
+router.get("/:id", articleController.getArticleById);
+
 router.put('/:id', [isAuthenticated,isAuthorized('admin')], articleController.editArticle);
 
 router.delete('/:id',[isAuthenticated, isAuthorized('admin')], articleController.deleteArticle);
+
 
 export default router;

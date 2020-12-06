@@ -1,27 +1,27 @@
-import catchAsync from "../middleware/CatchAsync.js";
-import { articleServices } from "../services/index.js";
+import catchAsync from '../middleware/CatchAsync.js';
+import { articleServices } from '../services/index.js';
 // importing authors from consatnts
-import { authors } from "../constants/index.js";
-import ErrorHandler from "../utils/errorHandler.js";
+import { authors } from '../constants/index.js';
+import ErrorHandler from '../utils/errorHandler.js';
 
-////////////////////////////////               AUTHORS               //////////////////////////////
+/// /////////////////////////////               AUTHORS               //////////////////////////////
 
 // authors are static and saved in constants
 export const getAuthors = (req, res, next) => {
-  res.status(200).json(authors);
+  res.status(200).json({ success: true, data: authors });
 };
 
-////////////////////////////////               CATEGORY               //////////////////////////////
+/// /////////////////////////////               CATEGORY               //////////////////////////////
 
 // getting all categories from db
 export const listCategories = catchAsync(async (req, res, next) => {
   const result = await articleServices.listCategories();
-  res.status(200).json(result);
+  res.status(200).json({ success: true, data: result });
 });
 
 export const getCategoryById = catchAsync(async (req, res, next) => {
   const result = await articleServices.getCategoryById(req.header.id);
-  res.status(200).json(result);
+  res.status(200).json({ success: true, data: result });
 });
 
 // creating a categori
@@ -33,7 +33,7 @@ export const createCategory = catchAsync(async (req, res, next) => {
   });
 });
 
-////////////////////////////////               ARTICLE               //////////////////////////////
+/// /////////////////////////////               ARTICLE               //////////////////////////////
 
 // creating an article
 export const createArticle = catchAsync(async (req, res, next) => {
@@ -47,12 +47,12 @@ export const createArticle = catchAsync(async (req, res, next) => {
 
 export const listArticles = catchAsync(async (req, res, next) => {
   const result = await articleServices.listArticles();
-  res.status(200).json(result);
+  res.status(200).json({ succes: true, data: result });
 });
 
 // edititng an article
 export const editArticle = catchAsync(async (req, res, next) => {
-  let article = await articleServices.getArticleById(req.params.id); // checking if it exists
+  const article = await articleServices.getArticleById(req.params.id); // checking if it exists
   if (!article) {
     return next(
       new ErrorHandler(
@@ -62,20 +62,34 @@ export const editArticle = catchAsync(async (req, res, next) => {
     );
   }
   const updated = await articleServices.editArticle(req.params.id, req.body); // applying changes
-  res.status(200).json(updated);
+  res.status(200).json({ success: true, data: updated });
 });
 
 export const listPublicArticles = catchAsync(async (req, res, next) => {
   const result = await articleServices.listPublicArticles();
-  res.status(200).json(result);
+  res.status(200).json({ success: true, data: result });
 });
 
-
-export const deleteArticle = catchAsync(async (req,res,next) => {
+export const deleteArticle = catchAsync(async (req, res, next) => {
   let article = await articleServices.getArticleById(req.params.id);
-  if(!article){
-      return next( new ErrorHandler(`Artilce with id: ${req.params.id} not found`,404));
+  if (!article) {
+    return next(
+      new ErrorHandler(`Artilce with id: ${req.params.id} not found`, 404)
+    );
   }
   article = await articleServices.deleteArticle(req.params.id);
   res.status(204).json({});
+});
+
+export const getArticleById = catchAsync(async (req, res, next) => {
+  const article = await articleServices.getArticleById(req.params.id);
+  if (!article) {
+    return next(
+      new ErrorHandler(`Artilce with id: ${req.params.id} not found`, 404)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    data: article,
+  });
 });

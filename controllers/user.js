@@ -53,5 +53,3 @@ export const logout = catchAsync(async(req, res, next) => {
     data: 'You have been logged out',
     });
 });
-
-

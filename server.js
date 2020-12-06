@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+
 import { PORT } from './constants/index.js'; // henter PORT fra constans mappen
 import 'dotenv/config.js'; // henter alt fra .env
 
@@ -31,7 +32,7 @@ app.use(
   })
 );
 
-app.use(cookieParser()); // package for parcing cookies
+app.use(cookieParser()); // package for parcing cookies'
 
 app.use(`/user`, user); // hoved ruta / users.... håndteres av users.js i routes
 app.use('/article', article); // poll ruta / users... håndteres av poll.js i routes

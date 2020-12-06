@@ -69,3 +69,13 @@ export const listPublicArticles = catchAsync(async (req, res, next) => {
   const result = await articleServices.listPublicArticles();
   res.status(200).json(result);
 });
+
+
+export const deleteArticle = catchAsync(async (req,res,next) => {
+  let article = await articleServices.getArticleById(req.params.id);
+  if(!article){
+      return next( new ErrorHandler(`Artilce with id: ${req.params.id} not found`,404));
+  }
+  article = await articleServices.deleteArticle(req.params.id);
+  res.status(204).json({});
+});

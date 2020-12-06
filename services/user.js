@@ -11,4 +11,4 @@ export const getUserByEmail = async(email, usePassword) =>{
     return User.findOne(email);
 }
 
-export const getUserById = async(id) => (await User.findById(id)); // getting user by id
+export const getUserById = async (id) => User.findById(id); // getting user by id

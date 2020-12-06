@@ -36,4 +36,8 @@ export const editArticle = async (id, editArticle) =>
         useFindAndModify: false,
       });
 
+export const deleteArticle = async (id) => {
+  const article = await Article.findById(id);
+  article.remove();
+}
 

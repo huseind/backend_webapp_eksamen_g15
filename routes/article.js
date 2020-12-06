@@ -23,4 +23,6 @@ router.get("/",[canViewAllArticles], articleController.listArticles);
 
 router.put('/:id', [isAuthenticated,isAuthorized('admin')], articleController.editArticle);
 
+router.delete('/:id',[isAuthenticated, isAuthorized('admin')], articleController.deleteArticle);
+
 export default router;

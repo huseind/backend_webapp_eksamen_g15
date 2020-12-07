@@ -54,9 +54,6 @@ export const canViewAllArticles = catchAsync(async (req, res, next) => {
 
 export const canViewThisArticle = catchAsync(async (req, res, next) => {
   const article = await articleServices.getArticleById(req.params.id);
-  if (article.secret === false) {
-    return next();
-  }
 
   let token;
   if (req.cookies?.token) {
@@ -64,7 +61,11 @@ export const canViewThisArticle = catchAsync(async (req, res, next) => {
     token = req.cookies.token;
   }
 
-  if (!token) {
+  if (!token && article.secret === false) {
+    return next();
+  }
+
+  if (!token && article.secretc === true) {
     // if token is null, show only public articles
     return next(
       new ErrorHandler('You have to be logged in to view this article 1', 400)
@@ -74,13 +75,14 @@ export const canViewThisArticle = catchAsync(async (req, res, next) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET); // if there is a token, it is decoded
   const user = await userServices.getUserById(decoded.id); // getting user by the id
 
-
   if (!user) {
     // if the user does not exist, show public articles
     return next(
       new ErrorHandler('You have to be logged in to view this article', 400)
     );
   }
+
+  userServices.addArticleToRead(decoded.id, article._id);
 
   next();
 });

@@ -39,8 +39,15 @@ const ArticleSchema = new Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'Image',
     },
+    averageReadTime: {
+      type: Number,
+    },
+    timesRead: {
+      type: Number,
+      default: 0,
+    },
     secret: {
-      select: false,
+      select: true,
       type: Boolean,
       default: false,
     },
@@ -52,6 +59,14 @@ const ArticleSchema = new Schema(
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+// article is attached to user to count # of articles read by user
+ArticleSchema.virtual('users', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'articlesRead',
+  justOne: false,
+});
 
 // timestamp is created so that we can check when the article was created
 export default mongoose.model('Article', ArticleSchema);

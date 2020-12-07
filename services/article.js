@@ -30,7 +30,7 @@ export const listPublicArticles = async () =>
     .populate('image', 'file_path');
 
 export const getArticleById = async (id) =>
-  await Article.findById(id).populate('image', 'file_path').select('+secret');
+  Article.findById(id).populate('image', 'file_path').select('+secret');
 
 export const editArticle = async (id, editArticle) =>
   Article.findByIdAndUpdate(id, editArticle, {
@@ -43,3 +43,18 @@ export const deleteArticle = async (id) => {
   const article = await Article.findById(id);
   article.remove();
 };
+
+// incrementing the number of times read
+export const incrementTimesRead = async (id) => {
+  await Article.findByIdAndUpdate(
+    id,
+    { $inc: { timesRead: 1 } },
+    { new: true, runValidators: true, useFindAndModify: false }
+  );
+};
+
+export const getTopTenArticles = async () =>{
+  console.log('SERVICE CALLED');
+   const articles = await Article.find({}).sort({ timesRead: -1 }).limit(10);
+  return articles;
+}

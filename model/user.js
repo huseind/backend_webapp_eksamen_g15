@@ -28,7 +28,7 @@ const UserSchema = new Schema(
         role: { // role is set to user by default, can be spesified in postman to admin or superAdmin
             type: String, 
             enum: {
-                values: ['user', 'admin'],
+                values: ['user', 'admin', 'superAdmin'],
             },
             default: "user",
         }

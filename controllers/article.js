@@ -1,8 +1,10 @@
+import { get } from 'mongoose';
 import catchAsync from '../middleware/CatchAsync.js';
 import { articleServices } from '../services/index.js';
 // importing authors from consatnts
 import { authors } from '../constants/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
+import article from '../model/article.js';
 
 /// /////////////////////////////               AUTHORS               //////////////////////////////
 
@@ -46,6 +48,16 @@ export const createArticle = catchAsync(async (req, res, next) => {
     author,
   } = req.body;
 
+  // calculating avarage read time, assuming one reads 240 words a min
+  const ingressReadTime = ingress.split(' ').length;
+  const contentOneReadTime = contentOne.split(' ').length;
+  let contentTwoReadTime = 0;
+  if (req.body.contentTwo) {
+    contentTwoReadTime = req.body.contentTwo.split(' ').length;
+  }
+  const averageReadTime =
+    (ingressReadTime + contentOneReadTime + contentTwoReadTime) / 240;
+
   // checking that the req contains all required fields
   if (
     !title ||
@@ -58,6 +70,7 @@ export const createArticle = catchAsync(async (req, res, next) => {
     return next(new ErrorHandler('Fyll inn alle felt'), 400);
   }
   req.body.user = req.user.id; // adding userId to the req.body and it is added to the object saved in the db
+  req.body.averageReadTime = averageReadTime;
   const result = await articleServices.createArticle(req.body);
   res.status(201).json({
     success: true,
@@ -102,6 +115,8 @@ export const deleteArticle = catchAsync(async (req, res, next) => {
 });
 
 export const getArticleById = catchAsync(async (req, res, next) => {
+  // incrementing timesREad
+  await articleServices.incrementTimesRead(req.params.id);
   const article = await articleServices.getArticleById(req.params.id);
   if (!article) {
     return next(
@@ -111,5 +126,14 @@ export const getArticleById = catchAsync(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: article,
+  });
+});
+
+export const getTopTenArticles = catchAsync(async (req, res, next) => {
+  console.log('CONTROLLER CALLED');
+  const articles = await articleServices.getTopTenArticles();
+  res.status(200).json({
+    success: true,
+    data: articles,
   });
 });

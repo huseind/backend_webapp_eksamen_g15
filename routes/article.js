@@ -23,14 +23,14 @@ router.get('/categories', articleController.listCategories);
 // creating a category
 router.post(
   '/category',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   articleController.createCategory
 );
 
 // creating an article
 router.post(
   '/create',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   articleController.createArticle
 );
 
@@ -39,15 +39,21 @@ router.get('/', [canViewAllArticles], articleController.listArticles);
 
 router.get('/:id', [canViewThisArticle], articleController.getArticleById);
 
+router.get(
+  '/top/ten',
+  [isAuthenticated, isAuthorized('superAdmin')],
+  articleController.getTopTenArticles
+);
+
 router.put(
   '/:id',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   articleController.editArticle
 );
 
 router.delete(
   '/:id',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   articleController.deleteArticle
 );
 

@@ -37,6 +37,26 @@ export const createCategory = catchAsync(async (req, res, next) => {
 
 // creating an article
 export const createArticle = catchAsync(async (req, res, next) => {
+  const {
+    title,
+    ingress,
+    subtitleOne,
+    contentOne,
+    category,
+    author,
+  } = req.body;
+
+  // checking that the req contains all required fields
+  if (
+    !title ||
+    !ingress ||
+    !subtitleOne ||
+    !contentOne ||
+    !category ||
+    !author
+  ) {
+    return next(new ErrorHandler('Fyll inn alle felt'), 400);
+  }
   req.body.user = req.user.id; // adding userId to the req.body and it is added to the object saved in the db
   const result = await articleServices.createArticle(req.body);
   res.status(201).json({

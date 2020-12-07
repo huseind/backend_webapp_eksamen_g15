@@ -7,7 +7,7 @@ const router = express.Router();
 // router for sending a form
 router.post('/', contactFormController.sendForm);
 
-router.get('/forms', [isAuthenticated,isAuthorized('admin')], contactFormController.listForms);
+router.get('/', [isAuthenticated,isAuthorized('admin')], contactFormController.listForms);
 
 router.delete('/delete/:id',[isAuthenticated,isAuthorized('admin')], contactFormController.deleteForm);
 

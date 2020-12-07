@@ -4,20 +4,29 @@ import ErrorHandler from '../utils/errorHandler.js';
 import { sendMail } from '../utils/sendMail.js';
 
 export const sendForm = catchAsync(async (req, res, next) => {
+  const { name, email, subject, message } = req.body;
+  if (!name || !email || !subject || !message) {
+    return next(new ErrorHandler('Form incomplete', 400));
+  }
   const sentForm = await contactFormServices.sendForm(req.body);
-  const user = await userServices.getUserById(sentForm.user);
   // sending a message to the user for
   try {
     await sendMail({
-      email: req.email,
+      email: req.body.email,
       subject: 'FG Inquiry received',
-      message: `Thank you for contacting us, your inqury: 
+      message: `Thank you for contacting us ${req.body.name}, your inqury: 
                     \n ${sentForm.subject} \n ${sentForm.message} 
                     \n Sent: ${sentForm.createdAt}; 
-                    \n Has been received and will be handled soon`,
+                    \n has been received and will be handled soon`,
     });
   } catch (error) {
-    console.log(error);
+    // if the mail is not sent, send feedback to client
+    return next(
+      new ErrorHandler(
+        'Something went wrong when sending mail confirmation',
+        400
+      )
+    );
   }
   res.status(201).json({ success: true, data: sentForm });
 });

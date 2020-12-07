@@ -20,12 +20,12 @@ export const login = catchAsync(async (req, res, next) => {
   }
   const user = await userServices.getUserByEmail({ email }, true); // checking if the user is in the db
   if (!user) {
-    return next(new ErrorHandler('Mangler epost eller passord', 400));
+    return next(new ErrorHandler('Feil epost eller passord', 400));
   }
 
   const isPasswordRight = await user.passwordsMatch(password); // comparing provided password with the one in the db
   if (!isPasswordRight) {
-    return next(new ErrorHandler('Mangler epost eller passord', 400));
+    return next(new ErrorHandler('Feil epost eller passord', 400));
   }
   sendToken(user, res); // if all is good, a toke is sent
 });

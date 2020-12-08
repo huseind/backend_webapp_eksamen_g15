@@ -11,6 +11,7 @@ const ArticleSchema = new Schema(
     ingress: {
       type: String,
       required: true,
+      maxlength: [700, 'Ingressen er for lang, maks 700 char'],
     },
     subtitleOne: {
       type: String,

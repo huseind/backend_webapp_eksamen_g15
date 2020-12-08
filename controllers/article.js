@@ -1,22 +1,21 @@
-import { get } from 'mongoose';
 import catchAsync from '../middleware/CatchAsync.js';
 import { articleServices } from '../services/index.js';
 // importing authors from consatnts
 import { authors } from '../constants/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
-import article from '../model/article.js';
+
 
 /// /////////////////////////////               AUTHORS               //////////////////////////////
 
 // authors are static and saved in constants
-export const getAuthors = (req, res, next) => {
+export const getAuthors = (req, res) => {
   res.status(200).json({ success: true, data: authors });
 };
 
 /// /////////////////////////////               CATEGORY               //////////////////////////////
 
 // getting all categories from db
-export const listCategories = catchAsync(async (req, res, next) => {
+export const listCategories = catchAsync(async (req, res) => {
   const result = await articleServices.listCategories();
   res.status(200).json({ success: true, data: result });
 });
@@ -78,7 +77,7 @@ export const createArticle = catchAsync(async (req, res, next) => {
   });
 });
 
-export const listArticles = catchAsync(async (req, res, next) => {
+export const listArticles = catchAsync(async (req, res) => {
   const result = await articleServices.listArticles();
   res.status(200).json({ success: true, data: result });
 });
@@ -98,7 +97,7 @@ export const editArticle = catchAsync(async (req, res, next) => {
   res.status(200).json({ success: true, data: updated });
 });
 
-export const listPublicArticles = catchAsync(async (req, res, next) => {
+export const listPublicArticles = catchAsync(async (req, res) => {
   const result = await articleServices.listPublicArticles();
   res.status(200).json({ success: true, data: result });
 });
@@ -129,8 +128,7 @@ export const getArticleById = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getTopTenArticles = catchAsync(async (req, res, next) => {
-  console.log('CONTROLLER CALLED');
+export const getTopTenArticles = catchAsync(async (req, res) => {
   const articles = await articleServices.getTopTenArticles();
   res.status(200).json({
     success: true,

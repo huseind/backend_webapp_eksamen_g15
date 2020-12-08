@@ -1,6 +1,5 @@
 import Category from '../model/category.js';
 import Article from '../model/article.js';
-import category from '../model/category.js';
 
 /// /////////////////////////////               CATEGORY               //////////////////////////////
 
@@ -8,7 +7,7 @@ import category from '../model/category.js';
 export const listCategories = async () => Category.find();
 
 // getting a category by id
-export const getCategoryById = async (id) => category.findById(id);
+export const getCategoryById = async (id) => Category.findById(id);
 
 // adding a category
 export const createCategory = async (category) => Category.create(category);
@@ -32,8 +31,8 @@ export const listPublicArticles = async () =>
 export const getArticleById = async (id) =>
   Article.findById(id).populate('image', 'file_path').select('+secret');
 
-export const editArticle = async (id, editArticle) =>
-  Article.findByIdAndUpdate(id, editArticle, {
+export const editArticle = async (id, articleToEdit) =>
+  Article.findByIdAndUpdate(id, articleToEdit, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -53,8 +52,7 @@ export const incrementTimesRead = async (id) => {
   );
 };
 
-export const getTopTenArticles = async () =>{
-  console.log('SERVICE CALLED');
-   const articles = await Article.find({}).sort({ timesRead: -1 }).limit(10);
+export const getTopTenArticles = async () => {
+  const articles = await Article.find({}).sort({ timesRead: -1 }).limit(10);
   return articles;
-}
+};

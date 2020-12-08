@@ -2,7 +2,7 @@ import catchAsync from '../middleware/catchAsync.js';
 import { userServices } from '../services/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import { sendToken } from '../utils/jwtToken.js';
-import { writeToCsv } from '../utils/writeToCsv.js';
+import { writeToCsv } from '../utils/getLogData.js';
 
 export const register = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;

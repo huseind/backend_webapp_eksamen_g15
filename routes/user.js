@@ -1,7 +1,7 @@
 import express from 'express';
 import { userController } from '../controllers/index.js';
 import { isAuthenticated, isAuthorized } from '../middleware/auth.js';
-import { writeToCsv } from '../utils/writeToCsv.js';
+import { writeToCsv } from '../utils/getLogData.js';
 
 const router = express.Router();
 

@@ -48,7 +48,6 @@ const ArticleSchema = new Schema(
       default: 0,
     },
     secret: {
-      select: true,
       type: Boolean,
       default: false,
     },

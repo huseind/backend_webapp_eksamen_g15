@@ -65,10 +65,10 @@ export const canViewThisArticle = catchAsync(async (req, res, next) => {
     return next();
   }
 
-  if (!token && article.secretc === true) {
+  if (!token && article.secret === true) {
     // if token is null, show only public articles
     return next(
-      new ErrorHandler('You have to be logged in to view this article 1', 400)
+      new ErrorHandler('You have to be logged in to view this article ', 400)
     );
   }
 

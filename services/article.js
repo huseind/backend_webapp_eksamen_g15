@@ -29,7 +29,10 @@ export const listPublicArticles = async () =>
     .populate('image', 'file_path');
 
 export const getArticleById = async (id) =>
-  Article.findById(id).populate('image', 'file_path').select('+secret');
+  (await Article.findById(id).populate('image', 'file_path')).populate(
+    'category',
+    'name'
+  );
 
 export const editArticle = async (id, articleToEdit) =>
   Article.findByIdAndUpdate(id, articleToEdit, {

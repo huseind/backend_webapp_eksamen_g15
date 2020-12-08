@@ -15,7 +15,8 @@ export const writeToCsv = async (req, res, next) => {
 
   const topTenArticles = await Article.find({})
     .sort({ timesRead: -1 })
-    .select('-image');
+    .select('-image')
+    .limit(10);
 
   // stringifying data for writing, and formatting it
   // const data = JSON.stringify({ users, articles }, null, 4);

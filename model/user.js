@@ -24,6 +24,10 @@ const UserSchema = new Schema(
       select: false,
     },
     articlesRead: [mongoose.Schema.ObjectId],
+    nrOfArticlesRead: {
+      type: Number,
+      default: 0,
+    },
     role: {
       // role is set to user by default, can be spesified in postman to admin or superAdmin
       type: String,

@@ -19,9 +19,10 @@ export const addArticleToRead = async (id, articleID) => {
   const readArticles = user.articlesRead;
   if (!readArticles.includes(articleID)) {
     readArticles.push(articleID);
+    const nrOfArticles = readArticles.length;
     await User.findByIdAndUpdate(
       id,
-      { articlesRead: readArticles },
+      { articlesRead: readArticles, nrOfArticlesRead: nrOfArticles },
       { new: true, runValidators: true, useFindAndModify: false }
     );
   }

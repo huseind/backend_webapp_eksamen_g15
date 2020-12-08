@@ -17,12 +17,12 @@ router.get('/me', isAuthenticated, userController.getUser);
 // loging out
 router.post('/logout', userController.logout);
 
-// getting a user, so admin can view user activity
-router.get(
-  '/users',
-  [isAuthenticated, isAuthorized('superAdmin')],
-  userController.getAllUsers
-);
+// // getting a user, so admin can view user activity
+// router.get(
+//   '/users',
+//   [isAuthenticated, isAuthorized('superAdmin')],
+//   userController.getAllUsers
+// );
 
 // getting logdata in cvs format
 router.get(

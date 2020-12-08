@@ -2,12 +2,21 @@ import catchAsync from '../middleware/catchAsync.js';
 import { userServices } from '../services/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import { sendToken } from '../utils/jwtToken.js';
-import { writeToCsv } from '../utils/getLogData.js';
 
 export const register = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
-    return next(new ErrorHandler('Mangler navn, epost eller passord', 400)); // if not retorn error
+    return next(new ErrorHandler('Mangler navn, epost eller passord', 400)); 
+  }
+  // checking if mail is valid
+  if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+    return next(new ErrorHandler('Vennligst sjekk at eposten stemmer', 400)); 
+  }
+  // checking if password is valid
+  if (password.length < 3 || !/\d/.test(password)) {
+    return next(
+      new ErrorHandler('Parssordet må være 3 tegn og inneholde ett tall', 400)
+    ); // if not return error
   }
   const user = await userServices.register(req.body);
   sendToken(user, res); // creating a token, and sending it back in response

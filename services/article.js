@@ -54,7 +54,7 @@ export const incrementTimesRead = async (id) => {
   );
 };
 
-export const getTopTenArticles = async () => {
-  const articles = await Article.find({}).sort({ timesRead: -1 }).limit(10);
-  return articles;
-};
+// export const getTopTenArticles = async () => {
+//   const articles = await Article.find({}).sort({ timesRead: -1 }).limit(10);
+//   return articles;
+// };

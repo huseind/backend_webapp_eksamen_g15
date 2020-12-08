@@ -1,63 +1,80 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import cookieParser from 'cookie-parser'; 
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import hpp from 'hpp';
+import xssClean from 'xss-clean';
+import csurf from 'csurf';
+import mongoSanitize from 'express-mongo-sanitize';
+import rateLimit from 'express-rate-limit';
 
+import { PORT } from './constants/index.js';
+import 'dotenv/config.js'; // fetching enviremental variables
 
-import { PORT } from './constants/index.js'; // henter PORT fra constans mappen
-import 'dotenv/config.js'; // henter alt fra .env
-
-import user from './routes/user.js'; // henter bruker rutene
+import user from './routes/user.js';
 import article from './routes/article.js';
 import contactForm from './routes/contactForm.js';
 import image from './routes/image.js';
 
-import connectDatabase from './config/db.js'; // henter metode for å koble til db
+import connectDatabase from './config/db.js';
 import errorMiddleware from './middleware/errors.js';
 
+const app = express();
+app.use(helmet()); // adding header to req
+app.use(mongoSanitize()); // sanitizing content in req to avoid noSQL injections
+app.use(xssClean()); // sanitizing content in req to avoid xxs
+app.use(hpp()); // avoid noSQL exploits
 
+const limiter = rateLimit({
+  windowMs: 100 * 60 * 1000, // how many requests a minute we will accept (here 100 a minute for testing)
+  max: 1000, // max 1000 req from same ip (high for testing)
+});
 
-
-const app = express(); // sier at det er en express app
+app.use(limiter);
 
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev')); // brukes for logging 'dev' angir hvor mye log som skal skrives, finnes andre
+  app.use(morgan('dev')); // morgan used for logging
 }
 
 app.use(express.json()); // brukes for å kunne lese request
 app.use(express.static(`${__dirname}/public`)); // used to handle static data (__dirname takes us from current path to public folder)
 
+// using cors to not allow traffic from other sites
 app.use(
   cors({
     origin: 'http://localhost:3000',
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
     credentials: true,
   })
 );
 
 app.use(cookieParser()); // package for parcing cookies'
+app.use(csurf({ cookie: true })); // double checking the cookie for security
 
-app.use(`/user`, user); // hoved ruta / users.... håndteres av users.js i routes
-app.use('/article', article); // poll ruta / users... håndteres av poll.js i routes
-app.use('/contact', contactForm); // route for handling contactFrom routes
-app.use('/image',image); // route for up-/downloading images
+app.get(`/csrf-token`, (req, res) => {
+  res.status(200).json({ data: req.csrfToken() });
+});
 
-connectDatabase(); // kobler til db vi config mappen
-app.use(errorMiddleware); // bruker errorhåndtering vi selv har laget
+app.use(`/user`, user);
+app.use('/article', article);
+app.use('/contact', contactForm);
+app.use('/image', image);
+
+connectDatabase(); // connecting to db
+app.use(errorMiddleware); // using our own errorhandling
 
 const server = app.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
 
-// når prosessen har en uhåndtert feil
-// innebygget i node, 'on' lytter til 'unhandledRejection' i prosessen
-// siste line of defence om ikke vi har håndtert alle feil som kan forekomme
+// last line of defence, server shuts down when a handle is rejected
 process.on('unhandledRejection', (err) => {
-  console.log(`Error: ${err.message}`); // skriv ut feiled
-  console.log('Shutting down server due to Unhandled Promise Rejection'); // console log at serveren kommer til å avsluttes
+  console.log(`Error: ${err.message}`); // error is console logged
+  console.log('Shutting down server due to Unhandled Promise Rejection');
   server.close(() => {
-    // avslutt server
-    process.exit(1); // 1 betyr at feil har forekommet
+    // server is shut down with error code
+    process.exit(1);
   });
 });

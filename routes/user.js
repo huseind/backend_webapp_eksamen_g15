@@ -1,6 +1,7 @@
 import express from 'express';
 import { userController } from '../controllers/index.js';
 import { isAuthenticated, isAuthorized } from '../middleware/auth.js';
+import { writeToCsv } from '../utils/writeToCsv.js';
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.get(
 router.get(
     '/logdata',
     [isAuthenticated, isAuthorized('superAdmin')],
-    userController.getLogData
+    writeToCsv
   );
 
 export default router;

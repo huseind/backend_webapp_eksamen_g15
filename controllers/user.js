@@ -55,15 +55,15 @@ export const logout = catchAsync(async (req, res, next) => {
   });
 });
 
+// getting all users without personal info for superAdmin to see user behavior
 export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await userServices.getAllUsers();
   res.status(200).json({
     success: true,
     data: users,
-  })
+  });
 })
 
-export const getLogData = catchAsync(async (req, res, next) => {
-  const users = await writeToCsv();
-  res.status(200).json(users);
-});
+// export const getLogData = catchAsync(async (req, res, next) => {
+//   await writeToCsv(req.res.next);
+// });

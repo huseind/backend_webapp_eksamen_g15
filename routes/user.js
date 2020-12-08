@@ -1,6 +1,6 @@
 import express from 'express';
 import { userController } from '../controllers/index.js';
-import { isAuthenticated } from '../middleware/auth.js';
+import { isAuthenticated, isAuthorized } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -15,5 +15,11 @@ router.get('/me', isAuthenticated, userController.getUser);
 
 // loging out
 router.post('/logout', userController.logout);
+
+router.get(
+    '/logdata',
+    [isAuthenticated, isAuthorized('superAdmin')],
+    userController.getLogData
+  );
 
 export default router;

@@ -2,6 +2,7 @@ import catchAsync from '../middleware/catchAsync.js';
 import { userServices } from '../services/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import { sendToken } from '../utils/jwtToken.js';
+import { writeToCsv } from '../utils/writeToCsv.js';
 
 export const register = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -52,4 +53,9 @@ export const logout = catchAsync(async (req, res, next) => {
     success: true,
     data: 'You have been logged out',
   });
+});
+
+export const getLogData = catchAsync(async (req, res, next) => {
+  const users = await writeToCsv();
+  res.status(200).json(users);
 });

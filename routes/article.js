@@ -8,6 +8,7 @@ import {
 } from '../middleware/auth.js';
 
 
+
 const router = express.Router();
 
 // routes require user to be logged in and sometimes have a admin role
@@ -57,5 +58,6 @@ router.delete(
   [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   articleController.deleteArticle
 );
+
 
 export default router;

@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser'; 
 
 
 import { PORT } from './constants/index.js'; // henter PORT fra constans mappen
@@ -14,6 +14,9 @@ import image from './routes/image.js';
 
 import connectDatabase from './config/db.js'; // henter metode for å koble til db
 import errorMiddleware from './middleware/errors.js';
+
+
+
 
 const app = express(); // sier at det er en express app
 

@@ -5,10 +5,11 @@ import { authors } from '../constants/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 
 
+
 /// /////////////////////////////               AUTHORS               //////////////////////////////
 
 // authors are static and saved in constants
-export const getAuthors = (req, res) => {
+export const getAuthors = async (req, res,next) => {
   res.status(200).json({ success: true, data: authors });
 };
 

@@ -50,6 +50,8 @@ app.use(
 );
 
 app.use(cookieParser()); // package for parcing cookies'
+
+// comment out this when using postman
 app.use(csurf({ cookie: true })); // double checking the cookie for security
 
 app.get(`/csrf-token`, (req, res) => {

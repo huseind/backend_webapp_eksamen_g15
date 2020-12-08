@@ -7,13 +7,14 @@ import {
   canViewThisArticle,
 } from '../middleware/auth.js';
 
+
 const router = express.Router();
 
 // routes require user to be logged in and sometimes have a admin role
 // getting all authors
 router.get(
   '/authors',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   articleController.getAuthors
 );
 

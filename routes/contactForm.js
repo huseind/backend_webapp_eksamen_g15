@@ -9,7 +9,7 @@ router.post('/', contactFormController.sendForm);
 
 router.get(
   '/',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   contactFormController.listForms
 );
 

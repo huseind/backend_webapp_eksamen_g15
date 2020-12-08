@@ -17,6 +17,12 @@ router.get('/me', isAuthenticated, userController.getUser);
 router.post('/logout', userController.logout);
 
 router.get(
+  '/users',
+  [isAuthenticated, isAuthorized('superAdmin')],
+  userController.getAllUsers
+);
+
+router.get(
     '/logdata',
     [isAuthenticated, isAuthorized('superAdmin')],
     userController.getLogData

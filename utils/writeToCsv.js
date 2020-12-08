@@ -4,7 +4,7 @@ import Article from '../model/article.js';
 
 export const writeToCsv = async () => {
   const users = await User.find({ role: 'user' }).select(
-    '-password -name -email -_id'
+    '-password -name -email'
   );
   const articles = await Article.find({})
     .sort({ timesRead: -1 })

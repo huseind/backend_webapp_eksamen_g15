@@ -27,3 +27,6 @@ export const addArticleToRead = async (id, articleID) => {
     );
   }
 };
+
+export const getAllUsers = async () =>
+  User.find({ role: 'user' }).select('-password -name -email ');

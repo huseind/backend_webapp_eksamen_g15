@@ -55,6 +55,14 @@ export const logout = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await userServices.getAllUsers();
+  res.status(200).json({
+    success: true,
+    data: users,
+  })
+})
+
 export const getLogData = catchAsync(async (req, res, next) => {
   const users = await writeToCsv();
   res.status(200).json(users);

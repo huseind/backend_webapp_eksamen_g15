@@ -15,7 +15,7 @@ router.get(
 
 router.delete(
   '/delete/:id',
-  [isAuthenticated, isAuthorized('admin')],
+  [isAuthenticated, isAuthorized('admin', 'superAdmin')],
   contactFormController.deleteForm
 );
 

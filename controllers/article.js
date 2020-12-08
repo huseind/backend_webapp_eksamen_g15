@@ -66,7 +66,7 @@ export const createArticle = catchAsync(async (req, res, next) => {
     !category ||
     !author
   ) {
-    return next(new ErrorHandler('Fyll inn alle felt'), 400);
+    return next(new ErrorHandler('Alle felt må utfylles utenom Innhold 2 og Under Tittel 2'), 400);
   }
   req.body.user = req.user.id; // adding userId to the req.body and it is added to the object saved in the db
   req.body.averageReadTime = averageReadTime;

@@ -21,26 +21,34 @@ import connectDatabase from './config/db.js';
 import errorMiddleware from './middleware/errors.js';
 
 const app = express();
-app.use(helmet()); // adding header to req
-app.use(mongoSanitize()); // sanitizing content in req to avoid noSQL injections
-app.use(xssClean()); // sanitizing content in req to avoid xxs
-app.use(hpp()); // avoid noSQL exploits
 
-const limiter = rateLimit({
-  windowMs: 100 * 60 * 1000, // how many requests a minute we will accept (here 100 a minute for testing)
-  max: 1000, // max 1000 req from same ip (high for testing)
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet()); // adding header to req
+  app.use(mongoSanitize()); // sanitizing content in req to avoid noSQL injections
+  app.use(xssClean()); // sanitizing content in req to avoid xxs
+  app.use(hpp()); // avoid noSQL exploits
 
-app.use(limiter);
+  const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // max 1000 req per
+    max: 1000,
+  });
 
+  app.use(limiter);
+}
+
+// morgan used for logging
+// using dev when in development
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev')); // morgan used for logging
+  app.use(morgan('dev'));
+} else if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('common'));
 }
 
 app.use(express.json()); // brukes for å kunne lese request
 app.use(express.static(`${__dirname}/public`)); // used to handle static data (__dirname takes us from current path to public folder)
 
 // using cors to not allow traffic from other sites
+console.log(app.req);
 app.use(
   cors({
     origin: 'http://localhost:3000',
@@ -51,12 +59,14 @@ app.use(
 
 app.use(cookieParser()); // package for parcing cookies'
 
-// comment out this when using postman
-app.use(csurf({ cookie: true })); // double checking the cookie for security
+if (process.env.NODE_ENV === 'production') {
+  // comment out this when using postman
+  app.use(csurf({ cookie: true })); // double checking the cookie for security
 
-app.get(`/csrf-token`, (req, res) => {
-  res.status(200).json({ data: req.csrfToken() });
-});
+  app.get(`/csrf-token`, (req, res) => {
+    res.status(200).json({ data: req.csrfToken() });
+  });
+}
 
 app.use(`/user`, user);
 app.use('/article', article);

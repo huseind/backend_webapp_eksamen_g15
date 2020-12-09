@@ -3,7 +3,7 @@ import ErrorHandler from '../utils/errorHandler';
 
 // filtering the file on filetype
 function fileFilter(req, file, cb) {
-  const filetypes = /\.(jpeg|jpg|png)$/;
+  const filetypes = /\.(jpeg|jpg|png|PNG)$/;
   if (!file.originalname.match(filetypes)) {
     return cb(new ErrorHandler('Only images are', 400));
   }

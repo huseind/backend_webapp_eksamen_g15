@@ -48,7 +48,6 @@ app.use(express.json()); // brukes for å kunne lese request
 app.use(express.static(`${__dirname}/public`)); // used to handle static data (__dirname takes us from current path to public folder)
 
 // using cors to not allow traffic from other sites
-console.log(app.req);
 app.use(
   cors({
     origin: 'http://localhost:3000',

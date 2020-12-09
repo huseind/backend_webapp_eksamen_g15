@@ -114,10 +114,7 @@ export const deleteArticle = catchAsync(async (req, res, next) => {
     );
   }
   article = await articleServices.deleteArticle(req.params.id);
-  res.status(204).json({
-    success: true,
-    message: 'Article was deleted',
-  });
+  res.status(204).json({});
 });
 
 export const getArticleById = catchAsync(async (req, res, next) => {

@@ -6,11 +6,11 @@ import { sendToken } from '../utils/jwtToken.js';
 export const register = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
-    return next(new ErrorHandler('Mangler navn, epost eller passord', 400)); 
+    return next(new ErrorHandler('Mangler navn, epost eller passord', 400));
   }
   // checking if mail is valid
   if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-    return next(new ErrorHandler('Vennligst sjekk at eposten stemmer', 400)); 
+    return next(new ErrorHandler('Vennligst sjekk at eposten stemmer', 400));
   }
   // checking if password is valid
   if (password.length < 3 || !/\d/.test(password)) {
@@ -71,7 +71,7 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     success: true,
     data: users,
   });
-})
+});
 
 // export const getLogData = catchAsync(async (req, res, next) => {
 //   await writeToCsv(req.res.next);

@@ -21,7 +21,10 @@ export const downloadImage = catchAsync(async (req, res, next) => {
   }
   // for windows, use image.file_path.replace('public/', '') for mac and linux
   // no longer neccesary as it it done when image is saved to db
-  const imagePath = `http://localhost:5000/${image.file_path.replace('public\\', '')}`;
+  const imagePath = `http://localhost:5000/${image.file_path.replace(
+    'public\\',
+    ''
+  )}`;
   res.status(200).json({
     success: true,
     data: { image, imagePath },

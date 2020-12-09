@@ -4,12 +4,10 @@ import { articleServices } from '../services/index.js';
 import { authors } from '../constants/index.js';
 import ErrorHandler from '../utils/errorHandler.js';
 
-
-
 /// /////////////////////////////               AUTHORS               //////////////////////////////
 
 // authors are static and saved in constants
-export const getAuthors = async (req, res,next) => {
+export const getAuthors = async (req, res, next) => {
   res.status(200).json({ success: true, data: authors });
 };
 
@@ -67,7 +65,12 @@ export const createArticle = catchAsync(async (req, res, next) => {
     !category ||
     !author
   ) {
-    return next(new ErrorHandler('Alle felt må utfylles utenom Innhold 2 og Under Tittel 2'), 400);
+    return next(
+      new ErrorHandler(
+        'Alle felt må utfylles utenom Innhold 2 og Under Tittel 2'
+      ),
+      400
+    );
   }
   req.body.user = req.user.id; // adding userId to the req.body and it is added to the object saved in the db
   req.body.averageReadTime = averageReadTime;
@@ -111,7 +114,10 @@ export const deleteArticle = catchAsync(async (req, res, next) => {
     );
   }
   article = await articleServices.deleteArticle(req.params.id);
-  res.status(204).json({});
+  res.status(204).json({
+    success: true,
+    message: 'Article was deleted',
+  });
 });
 
 export const getArticleById = catchAsync(async (req, res, next) => {

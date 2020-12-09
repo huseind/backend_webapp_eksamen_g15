@@ -53,8 +53,3 @@ export const incrementTimesRead = async (id) => {
     { new: true, runValidators: true, useFindAndModify: false }
   );
 };
-
-// export const getTopTenArticles = async () => {
-//   const articles = await Article.find({}).sort({ timesRead: -1 }).limit(10);
-//   return articles;
-// };

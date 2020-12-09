@@ -72,7 +72,3 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     data: users,
   });
 });
-
-// export const getLogData = catchAsync(async (req, res, next) => {
-//   await writeToCsv(req.res.next);
-// });

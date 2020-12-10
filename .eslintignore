@@ -4,3 +4,4 @@ dist
 *.lock
 Dockerfile
 .next
+all.test.js

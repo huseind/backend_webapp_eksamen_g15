@@ -29,7 +29,7 @@ export const listPublicArticles = async () =>
     .populate('image', 'file_path');
 
 export const getArticleById = async (id) =>
-  await Article.findById(id)
+  Article.findById(id)
     .populate('image', 'file_path')
     .populate('category', 'name');
 

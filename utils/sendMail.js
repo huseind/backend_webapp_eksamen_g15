@@ -11,7 +11,6 @@ export const sendMail = async (options) => {
       pass: process.env.EMAIL_PASSWORD,
     },
   });
-  console.log(process.env.EMAIL_USER);
   const message = {
     from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM}>`,
     to: options.email,

@@ -9,3 +9,5 @@ export default class ErrorHandler extends Error {
     Error.captureStackTrace(this, this.constructer);
   }
 }
+
+// Gotten from lectures

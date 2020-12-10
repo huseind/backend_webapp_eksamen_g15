@@ -18,7 +18,6 @@ export const isAuthenticated = catchAsync(async (req, res, next) => {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET); // if there is a token, it is decoded
   const user = await userServices.getUserById(decoded.id); // getting user by the id
-  console.log(user);
 
   if (!user) {
     // if the user does not exist

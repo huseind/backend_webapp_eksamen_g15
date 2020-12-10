@@ -18,6 +18,10 @@ export const register = catchAsync(async (req, res, next) => {
       new ErrorHandler('Parssordet må være 3 tegn og inneholde ett tall', 400)
     ); // if not return error
   }
+  const exists = await userServices.getUserByEmail({email});
+  if (exists) {
+    return next(new ErrorHandler('Du er allerede registrert', 400));
+  }
   const user = await userServices.register(req.body);
   sendToken(user, res); // creating a token, and sending it back in response
 });

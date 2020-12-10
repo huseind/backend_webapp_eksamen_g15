@@ -9,7 +9,6 @@ export const sendToken = (user, res) => {
     sameSite: true, // cannot be used by other sites
   };
 
-  // REMOVE???
   if (process.env.NODE_ENV === 'production') {
     options.secure = true;
   }
@@ -27,3 +26,6 @@ export const sendToken = (user, res) => {
       },
     });
 };
+
+
+// Gotten from lectures
